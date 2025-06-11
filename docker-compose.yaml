@@ -29,27 +29,7 @@ services:
     restart: always
     depends_on:
       - postgres
-      - ollama
       - chroma
-
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    env_file:
-      - ".env"
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama:/root/.ollama
-    tty: true
-    restart: always
-    entrypoint: sh -c "
-      ollama serve &
-      sleep 5;
-      ollama pull $LANGGRAPH_EMBEDDING_MODEL;
-      ollama pull $LANGGRAPH_LANGUAGE_MODEL;
-      wait
-      "
 
   chroma:
     image: chromadb/chroma:latest
@@ -98,7 +78,6 @@ services:
 
 volumes:
   backend-data:
-  ollama:
   chroma-data:
   prometheus-data:
   grafana-data:
